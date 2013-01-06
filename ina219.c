@@ -8,22 +8,36 @@
 void init_219(void)
 {
   init_i2c_master();
-  /* Start oscillator */
+
+  //Setup config registers. Use the software to update the MAGIC numbers
+  write_219_reg(REG_CONFIG, 0x399f);
+  write_219_reg(REG_CALIBRATION, 0x0000);
+}
+
+uint16_t read_219_reg(uint8_t reg)
+{
+  uint8_t low, uint8_t high;
+
   i2c_start();
+  //This may need MSB high. I am unsure from the DS.
   i2c_tx(ADDR | I2C_WRITE);
-  i2c_tx(0x00);
-  i2c_tx(1<<7);
+  i2c_tx(reg);
+  i2c_start();
+  i2c_tx(ADDR | I2C_READ);
+  high = i2c_rx_ack();
+  low = i2c_rx_nack();
   i2c_stop();
+
+  return (uint16_t)((high << 8) | low);
 }
 
-uint16_t read_voltage(void)
+void write_219_reg(uint8_t reg, uint16_t val)
 {
-}
-
-uint16_t read_current(void)
-{
-}
-
-uint16_t read_power(void)
-{
+  i2c_start();
+  //This may need MSB high. I am unsure from the DS.
+  i2c_tx(ADDR | I2C_WRITE);
+  i2c_tx(reg);
+  i2c_tx((uint8_t)(val >> 8));
+  i2c_tx((uint8_t)(val & 0xFF));
+  i2c_stop();
 }

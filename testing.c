@@ -7,19 +7,20 @@
 
 int main(void)
 {
-  uint16_t v = 0,i = 0, p = 0;
+  uint16_t vb = 0, vs = 0, i = 0, p = 0;
 
   init_219();
 
   for(;;)
   {
     _delay_ms(5000);
-    v = read_voltage();
-    i = read_current();
-    p = read_power();
+    vs = read_219_reg(REG_SHUNT);
+    vb = read_219_reg(REG_BUS);
+    i = read_219_reg(REG_CURRENT;)
+    p = read_219_reg(REG_POWER);
     //NB: if this looks strange, try the other one, since I may
     //    have got the lengths wrong...
-    printf("V:%hu I:%hu P:%hu", v, i, p);
-    //printf("V:%d I:%d P:%d", v, i, p);
+    printf("Vs:%hu Vb:%hu I:%hu P:%hu", vs, vb, i, p);
+    //printf("Vs:%d Vb:%d I:%d P:%d", vs, vb, i, p);
   }
 }
