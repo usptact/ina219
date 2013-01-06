@@ -17,5 +17,9 @@ int main(void)
     v = read_voltage();
     i = read_current();
     p = read_power();
+    //NB: if this looks strange, try the other one, since I may
+    //    have got the lengths wrong...
+    printf("V:%hu I:%hu P:%hu", v, i, p);
+    //printf("V:%d I:%d P:%d", v, i, p);
   }
 }
